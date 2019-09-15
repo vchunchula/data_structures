@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <stdio.h>
 using namespace std;
 
@@ -6,22 +7,37 @@ class QuickFindUF
 {
   private:
      int *id;
+     int *sz;
 
    public:
      QuickFindUF(int N);
      ~QuickFindUF();
-     bool isConnected(int p, int q);
-     void unionQf(int N, int p, int q);
+
+     //Eager Approach
+     bool isConnectedEA(int p, int q);
+     void unionQfEA(int N, int p, int q);
+     void quickFind_EagerApproach(int N);
+
+
+     //Lazy Approach
+     int root(int i);
+     bool isConnectedLA(int p, int q);
+     void unionQfLA(int N, int p, int q);
+     void quickFind_LazyApproach(int N);
+
      void printUnion(int N);
+
 };
 
 QuickFindUF::QuickFindUF(int N)
 {
   id = new int[N];
+  sz = new int[N];
 
   for(int i =0 ; i < N; i++)
   {
     id[i] = i;
+    sz[i] = 1;
   }
 }
 
@@ -34,7 +50,7 @@ QuickFindUF::~QuickFindUF()
   }
 }
 
-bool QuickFindUF::isConnected(int p, int q)
+bool QuickFindUF::isConnectedEA(int p, int q)
 {
   return (id[p] == id[q]);
 }
@@ -47,7 +63,7 @@ bool QuickFindUF::isConnected(int p, int q)
   union - N
   find - 1 (constant)
 */
-void QuickFindUF::unionQf(int N, int p, int q)
+void QuickFindUF::unionQfEA(int N, int p, int q)
 {
   int pid = id[p];
   int qid = id[q];
@@ -65,27 +81,136 @@ void QuickFindUF::printUnion(int N)
 {
   for(int i = 0 ; i < N; i++)
   {
-    printf("\t[%d]: %d\n", i, id[i]);
+    printf("\t[%d]: %d ", i, id[i]);
+  }
+  printf("\n");
+}
+
+void QuickFindUF::quickFind_EagerApproach(int N)
+{
+  bool isConn = false;
+  int p, q;
+
+  std::fstream myfile("uf_input.txt", std::ios_base::in);
+
+  printf("Inital Tree: ");
+  printUnion(N);
+  printf("\n");
+
+  while (myfile >> p >> q)
+  {
+    printf("pair %d %d: ", p, q);
+    isConn = isConnectedEA(p, q);
+    if(isConn == false)
+    {
+      unionQfEA(N, p, q);
+      printUnion(N);
+      printf("\n");
+    }
+    else
+    {
+      printf("\t%d and %d are connected\n\n", p, q);
+    }
+  }
+}
+
+/*
+chase parent pointers until we reach root
+depth of i array accesses
+*/
+int QuickFindUF::root(int i)
+{
+  while(i != id[i])
+  {
+    i = id[i];
+  }
+  return i;
+}
+
+//check if p and q have same roots
+bool QuickFindUF::isConnectedLA(int p, int q)
+{
+  return (root(p) == root(q));
+}
+
+/*
+change root of p to point to root of q
+extra array sz[] to count no of objects in the tree rooted at i
+link root of smaller tree to root of larger tree
+*/
+void QuickFindUF::unionQfLA(int N, int p, int q)
+{
+  int i = root(p);
+  int j = root(q);
+
+  if(sz[i] < sz[j])
+  {
+    id[i] = j;
+    sz[j] += sz[i];
+  }
+  else
+  {
+    id[j] = i;
+    sz[i] += sz[j];
+  }
+}
+
+void QuickFindUF::quickFind_LazyApproach(int N)
+{
+  bool isConn = false;
+  int p, q;
+
+  printf("Inital Tree: ");
+  printUnion(N);
+  printf("\n");
+
+  //while(cin >> p >> q)
+  std::fstream myfile("uf_input.txt", std::ios_base::in);
+  while (myfile >> p >> q)
+  {
+    printf("pair %d %d: ", p, q);
+    isConn = isConnectedLA(p, q);
+    if(isConn == false)
+    {
+      unionQfLA(N, p, q);
+      printUnion(N);
+      printf("\n");
+    }
+    else
+    {
+      printf("\t%d and %d are connected\n\n", p, q);
+    }
   }
 }
 int main()
 {
-  bool isConn = false;
   int N = 10;
-  int p, q;
+  int opt;
+
   QuickFindUF *uf = new QuickFindUF(N);
-  uf->printUnion(N);
-  while(cin >> p >> q)
+
+  printf("Union Find Algorithms to try:\n");
+  printf("\t 1. Quick Find Eager Approach\n");
+  printf("\t 2. Quick Find Lazy Approach\n");
+  printf("\nEnter your option: ");
+  cin >> opt;
+
+  switch(opt)
   {
-    isConn = uf->isConnected(p, q);
-    if(isConn == false)
+    case 1:
     {
-      uf->unionQf(N, p, q);
-      uf->printUnion(N);
+      uf->quickFind_EagerApproach(N);
+      break;
     }
-    else
+    case 2:
     {
-      printf("\t\t%d and %d are connected\n", p, q);
+      uf->quickFind_LazyApproach(N);
+      break;
+    }
+    default:
+    {
+      printf("Invalid option, Better luck next time!!");
+      break;
     }
   }
 
