@@ -9,3 +9,17 @@
 | quick-find-Eager | N | N | 1 |
 | quick-union-Lazy | N | N<sup>t</sup> | N |
 | weighted QU | N | lg N<sup>t</sup> | lg N |
+
+| Algorithm | Worst Case Time |
+| --- | --- |
+| quick-find-Eager | MN |
+| quick-union-Lazy | MN |
+| weighted QU | N + MLogN |
+| QU + path compression | N + MLogN |
+| weighted QU + path compression | N + MLq`*`N |
+
+Interesting fact:
+for 10<sup>9</sup> unions and finds with 10<sup>9</sup> objects
+
+- WQUPC reduces time from 30 years to 6 seconds
+- Supercomputer could not have helped instead a better algorithm did
