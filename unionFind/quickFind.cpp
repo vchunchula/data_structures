@@ -20,10 +20,10 @@ class QuickFindUF
 
 
      //Lazy Approach - with weights
-     int root(int i);
-     bool isConnectedLA(int p, int q);
-     void unionQfLA(int N, int p, int q);
-     void quickFind_Weighted(int N);
+     int root(int i, int pc);
+     bool isConnectedLA(int p, int q, int pc);
+     void unionQfLA(int N, int p, int q, int pc);
+     void quickFind_Weighted(int N, int pc);
 
      void printUnion(int N);
 
@@ -118,19 +118,28 @@ void QuickFindUF::quickFind_EagerApproach(int N)
 chase parent pointers until we reach root
 depth of i array accesses
 */
-int QuickFindUF::root(int i)
+int QuickFindUF::root(int i, int pc)
 {
   while(i != id[i])
   {
+    if(pc == 1)
+    {
+      /*
+        make every other node in path point to its
+        grandparent thus halving the path length
+        this is called Path compression
+      */
+      id[i] = id[id[i]];
+    }
     i = id[i];
   }
   return i;
 }
 
 //check if p and q have same roots
-bool QuickFindUF::isConnectedLA(int p, int q)
+bool QuickFindUF::isConnectedLA(int p, int q, int pc)
 {
-  return (root(p) == root(q));
+  return (root(p, pc) == root(q, pc));
 }
 
 /*
@@ -138,10 +147,10 @@ change root of p to point to root of q
 extra array sz[] to count no of objects in the tree rooted at i
 link root of smaller tree to root of larger tree
 */
-void QuickFindUF::unionQfLA(int N, int p, int q)
+void QuickFindUF::unionQfLA(int N, int p, int q, int pc)
 {
-  int i = root(p);
-  int j = root(q);
+  int i = root(p, pc);
+  int j = root(q, pc);
 
   if(sz[i] < sz[j])
   {
@@ -155,7 +164,7 @@ void QuickFindUF::unionQfLA(int N, int p, int q)
   }
 }
 
-void QuickFindUF::quickFind_Weighted(int N)
+void QuickFindUF::quickFind_Weighted(int N, int pc)
 {
   bool isConn = false;
   int p, q;
@@ -169,10 +178,10 @@ void QuickFindUF::quickFind_Weighted(int N)
   while (myfile >> p >> q)
   {
     printf("pair %d %d: ", p, q);
-    isConn = isConnectedLA(p, q);
+    isConn = isConnectedLA(p, q, pc);
     if(isConn == false)
     {
-      unionQfLA(N, p, q);
+      unionQfLA(N, p, q, pc);
       printUnion(N);
       printf("\n");
     }
@@ -185,7 +194,7 @@ void QuickFindUF::quickFind_Weighted(int N)
 int main()
 {
   int N = 10;
-  int opt;
+  int opt, pc;
 
   QuickFindUF *uf = new QuickFindUF(N);
 
@@ -204,7 +213,17 @@ int main()
     }
     case 2:
     {
-      uf->quickFind_Weighted(N);
+      printf("Want to try Path Compression:\n");
+      printf("\t 0. No\n");
+      printf("\t 1. Yes\n");
+      printf("\nEnter your option: ");
+      cin >> pc;
+      if(pc != 0 && pc != 1)
+      {
+        printf("Invalid option, defaulting to Path compression\n");
+        pc = 1;
+      }
+      uf->quickFind_Weighted(N, pc);
       break;
     }
     default:
