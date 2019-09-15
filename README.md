@@ -16,9 +16,9 @@ Worst Case Times
 | --- | --- |
 | quick-find-Eager | MN |
 | quick-union-Lazy | MN |
-| weighted QU | N + MLogN |
-| QU + path compression | N + MLogN |
-| weighted QU + path compression | N + MLq`*`N |
+| weighted QU | N + M logN |
+| QU + path compression | N + M logN |
+| weighted QU + path compression | N + M lg`*`N |
 
 Note: M  union-find operations on a set of N objects
 
