@@ -2,7 +2,7 @@
   Based on examples and concepts from Robert Sedgewick's Algorithms in C++
   
   1. Quick find eager approach
-  2. Quick find Lazy approach with weighting
+  2. Quick find Lazy approach with weighting and path compression
         
 | Algorithm | Initialize | Union | Connected |
 | --- | --- | --- | --- |
@@ -10,6 +10,7 @@
 | quick-union-Lazy | N | N<sup>t</sup> | N |
 | weighted QU | N | lg N<sup>t</sup> | lg N |
 
+Worst Case Times:
 | Algorithm | Worst Case Time |
 | --- | --- |
 | quick-find-Eager | MN |
