@@ -6,6 +6,6 @@
         
 | Algorithm | Initialize | Union | Connected |
 | --- | --- | --- | --- |
-| quick-find | N | N | 1 |
-| quick-union | N | N<sup>t</sup> | N |
+| quick-find-Eager | N | N | 1 |
+| quick-union-Lazy | N | N<sup>t</sup> | N |
 | weighted QU | N | lg N<sup>t</sup> | lg N |
