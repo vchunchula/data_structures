@@ -19,6 +19,8 @@ Worst Case Times:
 | QU + path compression | N + MLogN |
 | weighted QU + path compression | N + MLq`*`N |
 
+Note: M  union-find operations on a set of N objects
+
 Interesting fact:
 for 10<sup>9</sup> unions and finds with 10<sup>9</sup> objects
 
