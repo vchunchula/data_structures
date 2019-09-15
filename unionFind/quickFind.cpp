@@ -19,11 +19,11 @@ class QuickFindUF
      void quickFind_EagerApproach(int N);
 
 
-     //Lazy Approach
+     //Lazy Approach - with weights
      int root(int i);
      bool isConnectedLA(int p, int q);
      void unionQfLA(int N, int p, int q);
-     void quickFind_LazyApproach(int N);
+     void quickFind_Weighted(int N);
 
      void printUnion(int N);
 
@@ -155,7 +155,7 @@ void QuickFindUF::unionQfLA(int N, int p, int q)
   }
 }
 
-void QuickFindUF::quickFind_LazyApproach(int N)
+void QuickFindUF::quickFind_Weighted(int N)
 {
   bool isConn = false;
   int p, q;
@@ -204,7 +204,7 @@ int main()
     }
     case 2:
     {
-      uf->quickFind_LazyApproach(N);
+      uf->quickFind_Weighted(N);
       break;
     }
     default:
