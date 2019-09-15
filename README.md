@@ -10,7 +10,8 @@
 | quick-union-Lazy | N | N<sup>t</sup> | N |
 | weighted QU | N | lg N<sup>t</sup> | lg N |
 
-Worst Case Times:
+Worst Case Times
+
 | Algorithm | Worst Case Time |
 | --- | --- |
 | quick-find-Eager | MN |
